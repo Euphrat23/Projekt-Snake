@@ -30,6 +30,26 @@
         requestAnimationFrame(draw);
       }
 
+      function testGameOver() {
+
+        let firstPart = snake[0];
+        let otherParts = snake.slice(1);
+        let duplicatePart = otherParts.find(part => part.x == firstPart.x && part.y == firstPart.y);
+        //Fall 1: Schlange läuft gegen die Wand.
+        //Fall 2: Schlange beißt sich selber.
+        if (snake[0].x < 0 || 
+            snake[0].x > cols -1 ||
+            snake[0].y < 0 ||
+            snake[0].y > rows - 1 ||
+            duplicatePart
+        ) {
+            placeFood();
+            snake = [{ x: 19, y: 3 }];
+            direction = "left";
+        }
+        
+      }
+
       function placeFood() {
         let randomx = Math.floor(Math.random() * cols);
         let randomy = Math.floor(Math.random() * rows);
@@ -56,14 +76,15 @@
       }
 
       function gameloop() {
-        shiftSnake();
+        
+        testGameOver()
 
         if(foodCollected){
           snake = [{x: snake[0].x, y: snake[0].y}, ...snake];
           foodCollected = false;
         }
 
-        
+        shiftSnake();
 
         if (direction == "LEFT") {
           snake[0].x--;
