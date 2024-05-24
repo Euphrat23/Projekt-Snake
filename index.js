@@ -3,10 +3,7 @@
     let rows = 20;
     let cols = 20;
     let snake = [{ x: 19, y: 3 }];
-    let food = {
-         x: 5,
-        y: 5,
-    };
+    let food = {x: 5,y: 5,};
     let cellwidth = canvas.width / cols;
     let cellheight = canvas.height / rows;
     let direction = "left";
@@ -15,6 +12,8 @@
     
       setInterval(gameloop, 100);
       document.addEventListener("keydown", keyDown);
+
+      placeFood();
       draw();
 
       function draw() {
@@ -28,6 +27,13 @@
         add(food.x, food.y);
 
         requestAnimationFrame(draw);
+      }
+
+      function placeFood() {
+        let randomx = Math.floor(Math.random() * cols);
+        let randomy = Math.floor(Math.random() * rows);
+
+        food = {x: randomx, y: randomy}
       }
 
       function add(x, y) {
@@ -52,6 +58,12 @@
         if (direction == "DOWN") {
           snake[0].y++;
         }
+
+        if(snake[0].x == food.x && snake[0].y == food.y) {
+
+          placeFood();
+        }
+
       }
 
       function keyDown(e) {
