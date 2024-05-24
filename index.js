@@ -7,6 +7,7 @@
     let cellwidth = canvas.width / cols;
     let cellheight = canvas.height / rows;
     let direction = "left";
+    let foodCollected = false;
 
 
     
@@ -45,7 +46,25 @@
         );
       }
 
+      function shiftSnake() {
+          for (let i = snake.length - 1; i > 0; i--) {
+            const part = snake[i];
+            const lastPart = snake[i - 1]
+            part.x = lastPart.x;
+            part.y = lastPart.y;
+          }
+      }
+
       function gameloop() {
+        shiftSnake();
+
+        if(foodCollected){
+          snake = [{x: snake[0].x, y: snake[0].y}, ...snake];
+          foodCollected = false;
+        }
+
+        
+
         if (direction == "LEFT") {
           snake[0].x--;
         }
@@ -60,7 +79,7 @@
         }
 
         if(snake[0].x == food.x && snake[0].y == food.y) {
-
+          foodCollected = true;
           placeFood();
         }
 
